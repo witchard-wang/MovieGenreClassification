@@ -6,6 +6,7 @@ import json
 import csv
 import numpy as np
 import string
+import os
 
 #gets movie based on ID
 #@param ID int, id of movie from tmdb
@@ -19,6 +20,14 @@ def getMovie(ID, count):
 
     # for i in response.keys():
     #     print(i)
+    folderpath = "posters"
+    try:
+        os.mkdir(folderpath)
+    except OSError:
+        print ("Directory %s already exists" % folderpath)
+    else:
+        print ("Successfully created the directory %s " % folderpath)
+
     filename = "posters/movie" + str(count) + ".png"
     title = response['title']
     genreJSON = response['genres']
