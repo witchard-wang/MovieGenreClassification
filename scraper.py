@@ -61,8 +61,7 @@ def readIDs():
             writer = csv.DictWriter(movFile, fieldnames=fields)
             writer.writeheader()            
             count = 0
-            idx = 0
-            
+            idx = 0           
             while count < 2000:
                 mov = mov_IDs[idx]
                 t, f, g, p = getMovie(mov, count)
