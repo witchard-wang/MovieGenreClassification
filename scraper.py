@@ -104,4 +104,4 @@ def readIDs():
 #     print('Image Couldn\'t be retreived')
 
                
-readIDs()
+# readIDs()
