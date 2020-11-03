@@ -2,6 +2,7 @@ import pandas as pd
 import tmdbsimple as tmdb
 import shutil
 import urllib.request
+import requests
 import json
 import csv
 import numpy as np
@@ -17,7 +18,7 @@ def getMovie(ID, count):
     tmdb.API_KEY = tmdbv3
     movie = tmdb.Movies(ID)
     response = movie.info()
-
+    image = False
     # for i in response.keys():
     #     print(i)
     folderpath = "posters"
@@ -29,7 +30,7 @@ def getMovie(ID, count):
         print ("Successfully created the directory %s " % folderpath)
 
     filename = "posters/movie" + str(count) + ".png"
-    title = response['title']
+    title = "\"" + response['title'] + "\""
     genreJSON = response['genres']
     genres = []
     for x in genreJSON:
@@ -37,17 +38,35 @@ def getMovie(ID, count):
     print(title)
     print(response['poster_path'])
     print(genres)
-    if not (response['poster_path'] == None): 
+    lang = response['original_language']
+    date = response['release_date']
+    print(lang)
+    print(date)
+    if not (response['poster_path'] == None or len(genres) == 0): 
         image_path = 'https://image.tmdb.org/t/p/original' + response['poster_path']
+        r = requests.get(image_path, stream = True)
+        # Check if the image was retrieved successfully
+        if r.status_code == 200:
+            # Set decode_content value to True, otherwise the downloaded image file's size will be zero.
+            r.raw.decode_content = True
+            
+            # Open a local file with wb ( write binary ) permission.
+            with open(filename,'wb') as f:
+                shutil.copyfileobj(r.raw, f)
+            image = True
+            print('Image sucessfully Downloaded: ',filename)
+        else:
+            print('Image Couldn\'t be retreived')
         print(image_path)
-        
-        urllib.request.urlretrieve(image_path, filename)
-    return title, filename, ' '.join(map(str, genres)), response['poster_path']
+
+        # urllib.request.urlretrieve(image_path, filename)
+    print()
+    return title, filename, ' '.join(map(str, genres)), image, lang, date
 
 #reads and saves movie posters into poster folder
 #saves movie information into a csv file
 def readIDs():
-    with open('movie_ids_10_30_2020.json', encoding='utf-8') as rawJSON:
+    with open('movie_ids_11_01_2020.json', encoding='utf-8') as rawJSON:
         with open('mov_IDs.csv','w', encoding="utf-8") as movFile:
             #read all possible movie ids and randomize
             lines = rawJSON.readlines()
@@ -57,16 +76,16 @@ def readIDs():
             mov_IDs = np.random.permutation(mov_IDs)
 
             #save movie information 
-            fields = ['Title','Genres', 'Poster_Path']
-            writer = csv.DictWriter(movFile, fieldnames=fields)
+            fields = ['Title', 'Genres', 'Poster_Path', 'Language', 'Release_Date']
+            writer = csv.DictWriter(movFile, fieldnames=fields,lineterminator = '\n')
             writer.writeheader()            
             count = 0
             idx = 0           
             while count < 2000:
                 mov = mov_IDs[idx]
-                t, f, g, p = getMovie(mov, count)
-                if not (len(g) == 0 or p == None):
-                    writer.writerow({'Title': t, 'Genres': g, 'Poster_Path': f})
+                t, f, g, p, l, d = getMovie(mov, count)
+                if p == True:
+                    writer.writerow({'Title': t, 'Genres': g, 'Poster_Path': f, 'Language' : l, 'Release_Date' : d})
                     count += 1
                     
                 idx += 1
@@ -93,5 +112,4 @@ def readIDs():
 #     print('Image Couldn\'t be retreived')
 
                
-
-readIDs()
+# readIDs()
