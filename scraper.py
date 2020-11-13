@@ -66,7 +66,7 @@ def getMovie(ID, count):
 #reads and saves movie posters into poster folder
 #saves movie information into a csv file
 def readIDs():
-    with open('movie_ids_11_01_2020.json', encoding='utf-8') as rawJSON:
+    with open('movie_ids_11_12_2020.json', encoding='utf-8') as rawJSON:
         with open('mov_IDs.csv','w', encoding="utf-8") as movFile:
             #read all possible movie ids and randomize
             lines = rawJSON.readlines()
