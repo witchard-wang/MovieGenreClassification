@@ -65,8 +65,8 @@ def getMovie(ID, count):
 
 #reads and saves movie posters into poster folder
 #saves movie information into a csv file
-def readIDs():
-    with open('movie_ids_11_01_2020.json', encoding='utf-8') as rawJSON:
+def readIDs(total):
+    with open('movie_ids_11_12_2020.json', encoding='utf-8') as rawJSON:
         with open('mov_IDs.csv','w', encoding="utf-8") as movFile:
             #read all possible movie ids and randomize
             lines = rawJSON.readlines()
@@ -81,7 +81,7 @@ def readIDs():
             writer.writeheader()            
             count = 0
             idx = 0           
-            while count < 2000:
+            while count < total:
                 mov = mov_IDs[idx]
                 t, f, g, p, l, d = getMovie(mov, count)
                 if p == True:
@@ -112,4 +112,4 @@ def readIDs():
 #     print('Image Couldn\'t be retreived')
 
                
-# readIDs()
+# readIDs(2000)
