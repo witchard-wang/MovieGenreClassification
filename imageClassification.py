@@ -8,7 +8,11 @@ from tensorflow.keras.layers import Flatten, Dense, Dropout, BatchNormalization,
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.optimizers import Adam
 from sklearn.model_selection import train_test_split
-print(tf.test.is_gpu_available(cuda_only=False, min_cuda_compute_capability=None))
+from tensorflow.keras.models import model_from_json
+from tensorflow.keras.models import load_model
+from tensorflow.keras.models import save_model
+import h5py
+
 #Folder specification
 folder = "posters"
 
@@ -34,7 +38,7 @@ def processImages(folder):
 
 
 #Creates CNN to classify images
-def setupNeuralNetwork():
+def setupData():
     data = pd.read_csv("mov_IDs.csv")
     i = -1  
     for genres in data['Genres']:
@@ -44,15 +48,18 @@ def setupNeuralNetwork():
             if genre not in data.columns:
                 data[genre] = [0 for a in range(0,img_count)]
             data.iloc[i, data.columns.get_loc(genre)] = 1
-    #print(data)
+    print(data)
 
     dataModel = data.drop(['Title', 'Genres', 'Poster_Path', 'Release_Date', 'Language'], axis = 1)
-    #print(dataModel)
+    # dataModel = dataModel.drop(dataModel.index[10:5000])
+    print(dataModel)
     dataModel = dataModel.to_numpy()
     img_array = processImages(folder)
+    return data, dataModel, img_array
 
+def setupNeuralNetwork(dataModel, img_array):
     X_train, X_test, y_train, y_test = train_test_split(img_array, dataModel, random_state = 0, test_size = 0.15)
-    #print(X_train.shape)
+    print(X_train.shape)
 
     #Build sequential CNN
     model = Sequential()
@@ -91,14 +98,16 @@ def setupNeuralNetwork():
 
 
     model.add(Dense(len(data.columns) - 5, activation='sigmoid'))
-    #print(model.summary())
+    print(model.summary())
     #print("train:", X_train.shape)
     #print("test:", X_test.shape)
 
     # Compile and fit the model. Validation data is the data used to evaluate the accuracy of our model
     model.compile(optimizer='adam', loss = 'binary_crossentropy', metrics=['accuracy'])
-    history = model.fit(X_train, y_train, epochs=10, validation_data=(X_test, y_test))
-    return data, model, history
+    history = model.fit(X_train, y_train, epochs=5, validation_data=(X_test, y_test))
+    plot_learningCurve(history, 5)
+    return model
+
 
 def plot_learningCurve(history, epoch):
   # Plot training & validation accuracy values
@@ -121,7 +130,9 @@ def plot_learningCurve(history, epoch):
   plt.show()
 
 
-def predictGenre(img):
+def predictGenre(model, img):
+    # load weights into new model
+    print("Loaded model from disk")
     img = image.load_img(img, target_size = (img_width, img_height, 3))
     plt.imshow(img)
     img = image.img_to_array(img)
@@ -142,9 +153,12 @@ def predictGenre(img):
     return genres[top3Genres]
 
 
+sampleImg = (folder + "/movie") + str(508) + ".png"
     
-data, model, history = setupNeuralNetwork()
+data, dataModel, img_array = setupData()
 
-sampleImg = (folder + "/movie") + str(5) + ".png"
-plot_learningCurve(history, 5)
-predictGenre(sampleImg)
+#model = setupNeuralNetwork(dataModel, img_array)
+#model.save("savedModel")
+loaded_model = load_model("savedModel")
+print("Loaded model from disk")
+predictGenre(loaded_model, sampleImg)

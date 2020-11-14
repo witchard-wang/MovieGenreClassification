@@ -35,13 +35,13 @@ def getMovie(ID, count):
     genres = []
     for x in genreJSON:
         genres.append(x['name'])
-    print(title)
-    print(response['poster_path'])
-    print(genres)
+    #print(title)
+    #print(response['poster_path'])
+    #print(genres)
     lang = response['original_language']
     date = response['release_date']
-    print(lang)
-    print(date)
+    #print(lang)
+    #print(date)
     if not (response['poster_path'] == None or len(genres) == 0): 
         image_path = 'https://image.tmdb.org/t/p/original' + response['poster_path']
         r = requests.get(image_path, stream = True)
@@ -54,7 +54,7 @@ def getMovie(ID, count):
             with open(filename,'wb') as f:
                 shutil.copyfileobj(r.raw, f)
             image = True
-            print('Image sucessfully Downloaded: ',filename)
+            #print('Image sucessfully Downloaded: ',filename)
         else:
             print('Image Couldn\'t be retreived')
         print(image_path)
@@ -112,4 +112,4 @@ def readIDs(total):
 #     print('Image Couldn\'t be retreived')
 
                
-# readIDs(2000)
+readIDs(5000)
