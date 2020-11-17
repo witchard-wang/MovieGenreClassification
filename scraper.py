@@ -22,12 +22,12 @@ def getMovie(ID, count):
     # for i in response.keys():
     #     print(i)
     folderpath = "posters"
-    try:
-        os.mkdir(folderpath)
-    except OSError:
-        print ("Directory %s already exists" % folderpath)
-    else:
-        print ("Successfully created the directory %s " % folderpath)
+    # try:
+    #     os.mkdir(folderpath)
+    # except OSError:
+    #     print ("Directory %s already exists" % folderpath)
+    # else:
+    #     print ("Successfully created the directory %s " % folderpath)
 
     filename = "posters/movie" + str(count) + ".png"
     title = "\"" + response['title'] + "\""
@@ -35,14 +35,16 @@ def getMovie(ID, count):
     genres = []
     for x in genreJSON:
         genres.append(x['name'])
-    #print(title)
-    #print(response['poster_path'])
-    #print(genres)
+    print(title)
+    print(response['poster_path'])
+    print(genres)
     lang = response['original_language']
     date = response['release_date']
-    #print(lang)
-    #print(date)
-    if not (response['poster_path'] == None or len(genres) == 0): 
+    if date == "":
+        date = "-100"
+    print(lang)
+    print(date)
+    if not (response['poster_path'] == None or len(genres) == 0) and (int(date[0:4]) >= 2000):         
         image_path = 'https://image.tmdb.org/t/p/original' + response['poster_path']
         r = requests.get(image_path, stream = True)
         # Check if the image was retrieved successfully
