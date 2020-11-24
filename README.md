@@ -10,5 +10,8 @@ Movie data obtained using The Movie Database(TMDB) API
 In order to run scraper must add tmdbsimple to python environment
 `pip install tmdbsimple`
 
+In order to run imageClassification must add tensorflow to python environment `pip install tensorflow`.
+You would need to configure tensorflow to your system's requirements to have the prediction model working properly.
+
 Extracting colors from image
 `pip install colorthief`
