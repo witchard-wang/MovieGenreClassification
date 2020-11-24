@@ -155,8 +155,8 @@ def predictGenre(model, img):
 
 sampleImg = (folder + "/movie") + str(507) + ".png" 
 data, dataModel, img_array = setupData()
-model = setupNeuralNetwork(dataModel, img_array)
-model.save("savedModel")
+#model = setupNeuralNetwork(dataModel, img_array)
+#model.save("savedModel")
 loaded_model = load_model("savedModel")
 print("Loaded model from disk")
 predictGenre(loaded_model, sampleImg)
