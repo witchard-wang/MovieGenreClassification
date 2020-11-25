@@ -8,7 +8,6 @@ Movie posters can be designed in a confusing way even for humans. We wanted to c
 
 Our primary goal is to create a working prediction model to predict the genre of movie that a movie is based primarily on the poster only. Our secondary goal was to look at features of movie posters and see whether there are any patterns that emerge from them. The features that this study looked at was the dominant color of the movie poster and if it had a face on the poster, the emotion that the faces had. 
 
-Our final results are located in the "Final Deliverable.ipynb" 
 
 ### Note - Running the "Final Deliverable.ipynb" can take hours to run.
 
