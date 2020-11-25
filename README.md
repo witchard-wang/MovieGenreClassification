@@ -3,6 +3,7 @@ Aniruddha Srinivasan
 Vidhur Potluri
 Richard Wang
 
+# Our Final Results are located in "Final Deliverable.ipynb"
 Movie posters can be designed in a confusing way even for humans. We wanted to create a model that is able to predict the movie genre of a movie poster. 
 
 Our primary goal is to create a working prediction model to predict the genre of movie that a movie is based primarily on the poster only. Our secondary goal was to look at features of movie posters and see whether there are any patterns that emerge from them. The features that this study looked at was the dominant color of the movie poster and if it had a face on the poster, the emotion that the faces had. 
