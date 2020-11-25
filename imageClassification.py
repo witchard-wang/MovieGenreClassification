@@ -11,7 +11,7 @@ from sklearn.model_selection import train_test_split
 from tensorflow.keras.models import model_from_json
 from tensorflow.keras.models import load_model
 from tensorflow.keras.models import save_model
-from tensorflow.keras.utils import plot_model
+
 
 
 #Folder specification
@@ -141,19 +141,19 @@ def predictGenre(model, img):
     img = img.reshape(1, img_width, img_height, 3)
 
     genres = data.columns[7:]
-    print(genres)
+    #print(genres)
     probGenres = model.predict(img)
-    print(probGenres[0])
-    print(np.argsort(probGenres[0]))
+    #print(probGenres[0])
+    #print(np.argsort(probGenres[0]))
     top3Genres = np.argsort(probGenres[0])[:-4:-1]
-    print(probGenres[0][top3Genres])
+    #print(probGenres[0][top3Genres])
 
     for i in range(3):
             print(genres[top3Genres[i]])
     return genres[top3Genres]
 
 
-sampleImg = (folder + "/movie") + str(507) + ".png" 
+sampleImg = (folder + "/movie") + str(170) + ".png" 
 data, dataModel, img_array = setupData()
 #model = setupNeuralNetwork(dataModel, img_array)
 #model.save("savedModel")
