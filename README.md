@@ -27,5 +27,7 @@ In order to run imageClassification and the neural network, must add tensorflow 
  `pip install tensorflow`.
 You need to configure tensorflow to your system's requirements to have the prediction model working properly.
 
+### Note - If you would like to make predictions on your own posters, you would have to run setupData() first. This could take up to 10 minutes. Then run predictGenre with your image as input as shown in the final analysis section of the notebook (Part 3).
+
   
 
